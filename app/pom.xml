@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.org.piba</groupId>
 	<artifactId>sporting-event-race</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>sporting-event-race</name>
 	<description>Manager information and classification for each participant</description>
 	<url/>
