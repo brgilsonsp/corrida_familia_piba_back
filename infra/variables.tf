@@ -1,7 +1,6 @@
 variable "region_name" {
   description = "Region AWS where resources will be create"
   type        = string
-  default     = "us-east-1"
 }
 
 variable "identity_ami" {
@@ -10,10 +9,15 @@ variable "identity_ami" {
   default     = "ami-063d43db0594b521b"
 }
 
-variable "s3_path_jar_file" {
-  description = "Instance type for EC2"
+variable "instance_type" {
+  description = "Instancetype to instance EC2"
   type        = string
-  default     = "s3://artifactory-gilson-souza/java"
+  default     = "t2.micro"
+}
+
+variable "version_app" {
+  description = "Version of application"
+  type        = string
 }
 
 variable "jar_name" {
@@ -21,3 +25,29 @@ variable "jar_name" {
   type        = string
   default     = "sporting-event-race.jar"
 }
+
+variable "vpc_id" {
+  description = "VPC ID to user"
+  type        = string
+}
+
+variable "bucket_name_s3_jar_file" {
+  description = "Bucket name from JAR file"
+  type        = string
+}
+
+variable "path_jar_file_s3" {
+  description = "Path from JAR file"
+  type        = string
+}
+
+variable "script_path_startup" {
+  description = "Path of the scripts"
+  type        = string
+}
+
+variable "script_name_startup" {
+  description = "Name of script from startup application"
+  type        = string
+}
+
