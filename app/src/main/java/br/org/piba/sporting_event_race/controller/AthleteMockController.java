@@ -2,6 +2,7 @@ package br.org.piba.sporting_event_race.controller;
 
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
+import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/atletas")
-public class AthleteController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AthleteController.class);
+@RequestMapping("/mock/atletas")
+public class AthleteMockController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AthleteMockController.class);
     public static final List<AthleteDTO> LIST_ATHLETE;
     public static final String ATHLETE_NOT_FOUND = "Atleta não encontrato";
     public static final String ERROR_UPDATE = "Erro ao atualizar registro";
@@ -187,7 +188,7 @@ public class AthleteController {
     }
 
     private static ResponseEntity<ErrorResponseDTO> buildError404(){
-        return ResponseEntity.status(404).body(ResponseUtils.buildError(AthleteController.ATHLETE_NOT_FOUND));
+        return ResponseEntity.status(404).body(ResponseUtils.buildError(AthleteMockController.ATHLETE_NOT_FOUND));
     }
 
     private static ResponseEntity<ErrorResponseDTO> buildError409(final String message){

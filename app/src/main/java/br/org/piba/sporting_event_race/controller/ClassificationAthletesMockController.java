@@ -1,6 +1,7 @@
 package br.org.piba.sporting_event_race.controller;
 
 import br.org.piba.sporting_event_race.model.dto.ClassificationDTO;
+import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static br.org.piba.sporting_event_race.controller.ResponseUtils.buildRegisterNotFound204;
 
 @RestController
-@RequestMapping("/classificacao")
-public class ClassificationAthletesController {
+@RequestMapping("/mock/classificacao")
+public class ClassificationAthletesMockController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassificationAthletesController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClassificationAthletesMockController.class);
     private static final List<ClassificationDTO> listClassification;
 
     static{
@@ -68,7 +67,7 @@ public class ClassificationAthletesController {
             if(filtered.isEmpty()){
                 LOGGER.info("Classification not found by gender: {} and age_range: {}",
                         gender, ageRange);
-                return buildRegisterNotFound204();
+                return ResponseUtils.buildRegisterNotFound204();
             }else{
                 LOGGER.info("Get classification by gender: {} and age_range: {}",
                         gender, ageRange);

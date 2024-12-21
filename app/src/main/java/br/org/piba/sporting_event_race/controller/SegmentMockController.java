@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/segmentacao")
-public class SegmentController {
+@RequestMapping("/mock/segmentacao")
+public class SegmentMockController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SegmentController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SegmentMockController.class);
     private static final SegmentDTO segment;
 
     static {

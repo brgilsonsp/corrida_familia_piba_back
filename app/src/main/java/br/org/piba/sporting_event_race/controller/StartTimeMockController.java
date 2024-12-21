@@ -3,6 +3,7 @@ package br.org.piba.sporting_event_race.controller;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
 import br.org.piba.sporting_event_race.model.dto.StartTimeLine;
+import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.text.MessageFormat;
 import java.util.*;
 
-import static br.org.piba.sporting_event_race.controller.AthleteController.LIST_ATHLETE;
-import static br.org.piba.sporting_event_race.controller.ResponseUtils.*;
+import static br.org.piba.sporting_event_race.controller.AthleteMockController.LIST_ATHLETE;
 
 @RestController
-@RequestMapping("/cronometragem/largadas")
-public class StartTimeController {
+@RequestMapping("/mock/cronometragem/largadas")
+public class StartTimeMockController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(StartTimeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StartTimeMockController.class);
     private static final List<StartTimeLine> LIST_START_TIME_LINE = new ArrayList<>();
 
     @GetMapping
@@ -42,7 +42,7 @@ public class StartTimeController {
             if(filtered.isEmpty()){
                 LOGGER.warn("Cant get start line, because not found by monitor: {} and number: {}",
                         monitor, chesterNumber);
-                return buildRegisterNotFound204();
+                return ResponseUtils.buildRegisterNotFound204();
             }else{
                 LOGGER.warn("Get start line by monitor: {} and number: {}. List: {}",
                         monitor, chesterNumber, filtered);
@@ -123,11 +123,11 @@ public class StartTimeController {
                     return ResponseEntity.ok(newStartTimeLine);
                 }else{
                     LOGGER.warn("Cant update start line {}", newStartTimeLine);
-                    return buildError500();
+                    return ResponseUtils.buildError500();
                 }
             }else{
                 LOGGER.warn("Cant update start line, because id not found {}", idStartLine);
-                return buildRegisterNotFound404();
+                return ResponseUtils.buildRegisterNotFound404();
             }
         }catch (Exception e){
             LOGGER.error("Error update start line", e);
@@ -147,11 +147,11 @@ public class StartTimeController {
                     return ResponseEntity.ok().build();
                 }else{
                     LOGGER.warn("Cant delete start line {}", idStartLine);
-                    return buildError500();
+                    return ResponseUtils.buildError500();
                 }
             }else{
                 LOGGER.warn("Cant delete start line, because id not found {}", idStartLine);
-                return buildRegisterNotFound404();
+                return ResponseUtils.buildRegisterNotFound404();
             }
         }catch (Exception e){
             LOGGER.error("Error delete start line", e);

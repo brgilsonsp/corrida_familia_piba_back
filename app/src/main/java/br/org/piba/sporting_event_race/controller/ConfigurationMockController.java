@@ -13,10 +13,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping("/configuracoes")
-public class ConfigurationController {
+@RequestMapping("/mock/configuracoes")
+public class ConfigurationMockController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigurationMockController.class);
 
     @GetMapping(path = "/hora_servidor", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ServerHourDTO> getHourServer(){

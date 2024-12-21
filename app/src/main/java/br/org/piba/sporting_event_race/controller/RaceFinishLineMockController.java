@@ -3,6 +3,7 @@ package br.org.piba.sporting_event_race.controller;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
 import br.org.piba.sporting_event_race.model.dto.RaceFinishLine;
+import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.text.MessageFormat;
 import java.util.*;
 
-import static br.org.piba.sporting_event_race.controller.AthleteController.LIST_ATHLETE;
-import static br.org.piba.sporting_event_race.controller.ResponseUtils.*;
+import static br.org.piba.sporting_event_race.controller.AthleteMockController.LIST_ATHLETE;
 
 @RestController
-@RequestMapping("/cronometragem/chegadas")
-public class RaceFinishLineController {
+@RequestMapping("/mock/cronometragem/chegadas")
+public class RaceFinishLineMockController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RaceFinishLineController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RaceFinishLineMockController.class);
     private static final List<RaceFinishLine> LIST_FINISH_RACE = new ArrayList<>();
 
     @PostMapping
@@ -78,7 +78,7 @@ public class RaceFinishLineController {
             if(filtered.isEmpty()){
                 LOGGER.warn("Race finish not found by monitor: {} and number: {}",
                         monitor, chesterNumber);
-                return buildRegisterNotFound204();
+                return ResponseUtils.buildRegisterNotFound204();
             }else{
                 LOGGER.info("Race finish found by monitor: {} and number: {}. List: {}",
                         monitor, chesterNumber, filtered);
@@ -120,11 +120,11 @@ public class RaceFinishLineController {
                     return ResponseEntity.ok(newRegister);
                 }else{
                     LOGGER.warn("Cant update race finish {}", newRegister);
-                    return buildError500();
+                    return ResponseUtils.buildError500();
                 }
             }else{
                 LOGGER.warn("Cant update race finish, because id not found {}", id);
-                return buildRegisterNotFound404();
+                return ResponseUtils.buildRegisterNotFound404();
             }
         }catch (Exception e){
             LOGGER.error("Error update race finish", e);
@@ -145,11 +145,11 @@ public class RaceFinishLineController {
                     return ResponseEntity.ok().build();
                 }else{
                     LOGGER.warn("Cant delete race finish {}", id);
-                    return buildError500();
+                    return ResponseUtils.buildError500();
                 }
             }else{
                 LOGGER.warn("Cant delete race finish, because id not found {}", id);
-                return buildRegisterNotFound404();
+                return ResponseUtils.buildRegisterNotFound404();
             }
         }catch (Exception e){
             LOGGER.error("Error delete race finish", e);

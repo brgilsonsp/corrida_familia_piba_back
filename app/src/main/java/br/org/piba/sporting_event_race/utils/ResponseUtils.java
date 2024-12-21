@@ -1,4 +1,4 @@
-package br.org.piba.sporting_event_race.controller;
+package br.org.piba.sporting_event_race.utils;
 
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
 import org.springframework.http.ResponseEntity;
