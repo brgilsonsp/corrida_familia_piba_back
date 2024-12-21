@@ -41,3 +41,13 @@ variable "path_jar_file_s3" {
   type        = string
 }
 
+variable "script_path_startup" {
+  description = "Path of the scripts"
+  type        = string
+}
+
+variable "script_name_startup" {
+  description = "Name of script from startup application"
+  type        = string
+}
+

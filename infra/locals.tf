@@ -8,7 +8,7 @@ locals {
   cidr_servers         = "172.31.96.0/24"
   protocol_tcp         = "tcp"
   profile_ec2          = "profile_server_ec3-${local.type_service}"
-  name_server_ec2      = "server-${local.type_service}"
+  name_server_ec2      = "ec2-${local.type_service}"
   name_subnet          = "subnet-${local.type_service}"
   name_role_ec2_piba   = "role-server-ec2-${local.type_service}"
   name_policy_ec2_piba = "policy-server-ec2-${local.type_service}"

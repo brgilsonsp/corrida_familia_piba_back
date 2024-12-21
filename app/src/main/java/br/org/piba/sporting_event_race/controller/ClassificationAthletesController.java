@@ -1,8 +1,6 @@
 package br.org.piba.sporting_event_race.controller;
 
 import br.org.piba.sporting_event_race.model.dto.ClassificationDTO;
-import br.org.piba.sporting_event_race.model.dto.ListDataDTO;
-import br.org.piba.sporting_event_race.service.ClassificationAthletesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -11,26 +9,75 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import static br.org.piba.sporting_event_race.controller.ResponseUtils.buildRegisterNotFound204;
 
 @RestController
-@RequestMapping("/classificacoes")
+@RequestMapping("/classificacao")
 public class ClassificationAthletesController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassificationAthletesController.class);
+    private static final List<ClassificationDTO> listClassification;
 
-    private final ClassificationAthletesService classificationService;
+    static{
+        ClassificationDTO ana = new ClassificationDTO(1, "Ana Cristina",
+                "00:32:34.234", 25, "Feminino", 12345,
+                "Corrida", "Andre");
 
-    public ClassificationAthletesController(ClassificationAthletesService classificationService) {
-        this.classificationService = classificationService;
+        ClassificationDTO pedro = new ClassificationDTO(2, "Pedro",
+                "00:32:54.768", 28, "Masculino", 4321,
+                "Corrida", "Flavia");
+
+        ClassificationDTO felipe = new ClassificationDTO(1, "Felipe",
+                "00:52:34.234", 45, "Masculino", 9876,
+                "Caminhada", "Paula");
+
+        listClassification = new ArrayList<>();
+        listClassification.add(ana);
+        listClassification.add(pedro);
+        listClassification.add(felipe);
     }
 
     @GetMapping
-    public ResponseEntity<ListDataDTO<ClassificationDTO>> getClassificationsByGender(@RequestParam(name="sexo", required = false) final String gender,
-                                                                                     @RequestParam(name="faixa_etaria", required = false) final String ageRange,
-                                                                                     @RequestParam(name="categoria", required = false) final String category){
-        LOGGER.info("Obtendo lista de classificação para : sexo: {}, faixa_etaria: {}, categoria{}", gender, ageRange, category);
-        final List<ClassificationDTO> classifications = classificationService.getClassificationBy(gender, ageRange, category);
-        return ResponseEntity.ok(new ListDataDTO<>(classifications));
+    public ResponseEntity<?> getClassificationsByGender(@RequestParam(name="sexo", required = false) final String gender,
+                                                         @RequestParam(name="faixa_etaria", required = false) final String ageRange){
+        try{
+            List<ClassificationDTO> filtered = listClassification.stream()
+                    .filter(s -> {
+                        if (Objects.nonNull(gender) && !gender.isBlank()) {
+                            return s.gender().equalsIgnoreCase(gender);
+                        }
+                        return true;
+                    })
+                    .filter(s -> {
+                        if (Objects.nonNull(ageRange) && !ageRange.isBlank()) {
+                            String[] splitRange = ageRange.split("-");
+                            final int startRange = splitRange.length > 1 ?
+                                    Integer.parseInt(splitRange[0].trim()) : Integer.parseInt(ageRange.substring(0, 1));
+                            final int endRange = splitRange.length > 1 ?
+                                    Integer.parseInt(splitRange[1]) : 300;
+                            return s.age() >= startRange && s.age() <= endRange;
+                        }
+                        return true;
+                    }).toList();
+
+            if(filtered.isEmpty()){
+                LOGGER.info("Classification not found by gender: {} and age_range: {}",
+                        gender, ageRange);
+                return buildRegisterNotFound204();
+            }else{
+                LOGGER.info("Get classification by gender: {} and age_range: {}",
+                        gender, ageRange);
+                return ResponseEntity.ok(filtered);
+            }
+        }catch (Exception e){
+            LOGGER.error("Error get classification", e);
+            throw e;
+        }
+
     }
 }

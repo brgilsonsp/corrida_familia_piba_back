@@ -17,8 +17,10 @@ resource "aws_instance" "backend_instance_piba" {
                 sudo yum install java-21-amazon-corretto-headless -y
                 mkdir -p ~/app
                 aws s3 cp s3://${var.bucket_name_s3_jar_file}/${var.path_jar_file_s3}-${var.version_app}/${var.jar_name} ~/app/
+                aws s3 cp s3://${var.bucket_name_s3_jar_file}/${var.script_path_startup}/${var.script_name_startup} ~/app/
                 cd ~/app
-                nohup java -jar ${var.jar_name} &
+                chmod +x ./${var.script_name_startup}
+                ./${var.script_name_startup}
               EOF
 
   root_block_device {
