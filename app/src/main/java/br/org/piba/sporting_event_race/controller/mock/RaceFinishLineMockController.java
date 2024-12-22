@@ -1,4 +1,4 @@
-package br.org.piba.sporting_event_race.controller;
+package br.org.piba.sporting_event_race.controller.mock;
 
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.MessageFormat;
 import java.util.*;
 
-import static br.org.piba.sporting_event_race.controller.AthleteMockController.LIST_ATHLETE;
+import static br.org.piba.sporting_event_race.controller.mock.AthleteMockController.LIST_ATHLETE;
 
 @RestController
 @RequestMapping("/mock/cronometragem/chegadas")

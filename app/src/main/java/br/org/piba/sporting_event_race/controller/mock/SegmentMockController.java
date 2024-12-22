@@ -1,4 +1,4 @@
-package br.org.piba.sporting_event_race.controller;
+package br.org.piba.sporting_event_race.controller.mock;
 
 import br.org.piba.sporting_event_race.model.dto.SegmentDTO;
 import org.slf4j.Logger;
