@@ -33,7 +33,15 @@ erDiagram
         VARCHAR(50) monitor
     }
 
-    ATHLETE ||--o{ START_RACE  : "has"
-    ATHLETE ||--o{ FINISH_RACE : "has"
+    START_RACE_GENERAL {
+        INT id PK
+        UUID id_uuid UK
+        TIME time_start
+        VARCHAR(50) monitor
+    }
+
+    ATHLETE ||--o{ START_RACE         : "has"
+    ATHLETE ||--o{ FINISH_RACE        : "has"
+    ATHLETE ||--o{ START_RACE_GENERAL : "has"
 
 ```

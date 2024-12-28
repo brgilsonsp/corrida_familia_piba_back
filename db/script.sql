@@ -17,6 +17,14 @@ CREATE TABLE athlete (
     monitor VARCHAR(150)
 );
 
+-- Criação da Tabela de Largada Geraç
+CREATE TABLE start_race_general (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_uuid CHAR(36) UNIQUE NOT NULL,
+    time_start TIME NOT NULL,
+    monitor VARCHAR(50) NOT NULL
+);
+
 -- Criação da Tabela de Largadas
 CREATE TABLE start_race (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
