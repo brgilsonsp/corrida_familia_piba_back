@@ -1,7 +1,9 @@
 package br.org.piba.sporting_event_race.controller.prod;
 
+import br.org.piba.sporting_event_race.exception.NoContentException;
 import br.org.piba.sporting_event_race.model.dto.StartRaceDTO;
 import br.org.piba.sporting_event_race.service.StartRaceService;
+import br.org.piba.sporting_event_race.utils.CollectionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +25,11 @@ public class StartRaceController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StartRaceDTO>> get(@RequestParam(name = "monitor", required = false) final String monitor,
                                                 @RequestParam(name = "numero_peito", required = false) final Integer bibNumber){
-        return ResponseEntity.ok(service.getBy(monitor, bibNumber));
+        List<StartRaceDTO> listFound = service.getBy(monitor, bibNumber);
+        if(CollectionUtils.isNullOrEmpty(listFound)){
+            throw new NoContentException("Reigstros não encontrado");
+        }
+        return ResponseEntity.ok(listFound);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
