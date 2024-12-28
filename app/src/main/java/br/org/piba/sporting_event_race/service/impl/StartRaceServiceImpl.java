@@ -20,7 +20,6 @@ import java.util.UUID;
 
 @Service
 public class StartRaceServiceImpl implements StartRaceService {
-    public static final String ATHLETE_NOT_FOUND = "Atleta não encontrado com o número de peito informado";
     public static final String RECORD_NOT_FOUND = "Registro não encontrado";
 
     private final StartRaceRepository repository;
