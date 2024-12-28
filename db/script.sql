@@ -14,8 +14,7 @@ CREATE TABLE athlete (
     date_of_birth DATE NOT NULL,
     modality VARCHAR(30) NOT NULL,
     bib_number INT,
-    email VARCHAR(150),
-    phone VARCHAR(20)
+    monitor VARCHAR(150)
 );
 
 -- Criação da Tabela de Largadas

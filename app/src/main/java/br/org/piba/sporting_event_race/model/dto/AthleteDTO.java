@@ -7,11 +7,11 @@ import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record AthleteDTO(@JsonProperty("id_atleta") UUID id,
-                         @JsonProperty("nome") String names,
+                         @JsonProperty("nome") String name,
                          @JsonProperty("documento") String document,
                          @JsonProperty("numero_peito") Integer chesterNumber,
                          @JsonProperty("sexo") String gender,
                          @JsonProperty("data_nascimento") String birthDate,
-                         @JsonProperty("modalidade") String mode,
+                         @JsonProperty("modalidade") String modality,
                          @JsonProperty("monitor") String monitorName) {
 }

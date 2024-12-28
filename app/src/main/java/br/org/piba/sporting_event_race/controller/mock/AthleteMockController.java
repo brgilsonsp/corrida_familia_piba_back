@@ -65,7 +65,7 @@ public class AthleteMockController {
                     })
                     .filter(a -> {
                         if (Objects.nonNull(partialName) && !partialName.isBlank()) {
-                            return a.names().contains(partialName);
+                            return a.name().contains(partialName);
                         }
                         return true;
                     })
@@ -95,12 +95,12 @@ public class AthleteMockController {
                 return buildError409("Localizado um registro com esse documento: " + athlete.document() + ".");
             }else {
                 AthleteDTO newAthlete = new AthleteDTO(UUID.randomUUID(),
-                        athlete.names(),
+                        athlete.name(),
                         athlete.document(),
                         athlete.chesterNumber(),
                         athlete.gender(),
                         athlete.birthDate(),
-                        athlete.mode(),
+                        athlete.modality(),
                         athlete.monitorName());
                 LIST_ATHLETE.add(newAthlete);
                 LOGGER.info("Success add new athlete: {}", newAthlete);
@@ -151,12 +151,12 @@ public class AthleteMockController {
                     .findFirst();
             if(athleteFound.isPresent()){
                 AthleteDTO newAthlete = new AthleteDTO(idAthlete,
-                        athlete.names(),
+                        athlete.name(),
                         athlete.document(),
                         athlete.chesterNumber(),
                         athlete.gender(),
                         athlete.birthDate(),
-                        athlete.mode(),
+                        athlete.modality(),
                         athlete.monitorName());
                 if(LIST_ATHLETE.remove(athleteFound.get())){
                     LIST_ATHLETE.add(newAthlete);

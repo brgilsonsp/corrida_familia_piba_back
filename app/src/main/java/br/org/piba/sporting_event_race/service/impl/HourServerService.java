@@ -1,6 +1,6 @@
 package br.org.piba.sporting_event_race.service.impl;
 
-import br.org.piba.sporting_event_race.exception.SportingRaceKnownException;
+import br.org.piba.sporting_event_race.exception.BusinessException;
 import br.org.piba.sporting_event_race.model.dto.ServerHourDTO;
 import br.org.piba.sporting_event_race.service.HourServer;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class HourServerService implements HourServer {
 
-    public static final String MESSAGE_INTERN = "Error while get server hour";
     public static final String MESSAGE_CLIENT = "Ocorreu erro ao obter a hora do servidor";
     private final DateTimeFormatter hourFormat;
 
@@ -26,7 +25,7 @@ public class HourServerService implements HourServer {
             final String hourServer = LocalTime.now().format(hourFormat);
             return new ServerHourDTO(hourServer);
         }catch (DateTimeException e){
-            throw new SportingRaceKnownException(MESSAGE_INTERN, e, MESSAGE_CLIENT);
+            throw new BusinessException(e, MESSAGE_CLIENT);
         }
     }
 }

@@ -14,8 +14,7 @@ erDiagram
         DATE date_of_birth
         VARCHAR(30) modality
         INT bib_number
-        VARCHAR(150) email
-        VARCHAR(20) phone
+        VARCHAR(150) monitor
     }
 
     START_RACE {
