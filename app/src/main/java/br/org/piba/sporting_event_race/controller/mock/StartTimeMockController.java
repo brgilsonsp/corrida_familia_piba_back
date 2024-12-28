@@ -2,7 +2,7 @@ package br.org.piba.sporting_event_race.controller.mock;
 
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
-import br.org.piba.sporting_event_race.model.dto.StartTimeLine;
+import br.org.piba.sporting_event_race.model.dto.StartRaceDTO;
 import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +19,13 @@ import static br.org.piba.sporting_event_race.controller.mock.AthleteMockControl
 public class StartTimeMockController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StartTimeMockController.class);
-    private static final List<StartTimeLine> LIST_START_TIME_LINE = new ArrayList<>();
+    private static final List<StartRaceDTO> LIST_START_TIME_LINE = new ArrayList<>();
 
     @GetMapping
     public ResponseEntity<?> getStartLine(@RequestParam(name = "monitor", required = false) final String monitor,
                                         @RequestParam(name = "numero_peito", required = false) final Integer chesterNumber){
         try{
-            List<StartTimeLine> filtered = LIST_START_TIME_LINE.stream()
+            List<StartRaceDTO> filtered = LIST_START_TIME_LINE.stream()
                     .filter(s -> {
                         if (Objects.nonNull(monitor) && !monitor.isBlank()) {
                             return s.monitorName().equals(monitor);
@@ -55,36 +55,36 @@ public class StartTimeMockController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addNewStartLine(@RequestBody final StartTimeLine startTimeLine){
+    public ResponseEntity<?> addNewStartLine(@RequestBody final StartRaceDTO startRaceDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
                     .map(AthleteDTO::chesterNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(startTimeLine.chesterNumber()));
+                    .anyMatch(a -> a.equals(startRaceDTO.chesterNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de largada não criado",
-                                startTimeLine.chesterNumber());
+                                startRaceDTO.chesterNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
 
-            final Optional<StartTimeLine> registered = LIST_START_TIME_LINE.stream()
-                    .filter(s -> s.equals(startTimeLine)).findFirst();
+            final Optional<StartRaceDTO> registered = LIST_START_TIME_LINE.stream()
+                    .filter(s -> s.equals(startRaceDTO)).findFirst();
             if(registered.isPresent()) {
                 LOGGER.info("Register start line not savedd, because exists: {}", registered.get());
                 return ResponseEntity.ok(registered.get());
             }else{
 
-                StartTimeLine newStartTimeLine = new StartTimeLine(UUID.randomUUID(),
-                        startTimeLine.chesterNumber(),
-                        startTimeLine.arrivalTime(),
-                        startTimeLine.monitorName(),
-                        startTimeLine.athleteName());
-                LIST_START_TIME_LINE.add(newStartTimeLine);
-                LOGGER.info("Success add new start line: {}", newStartTimeLine);
-                return ResponseEntity.status(201).body(newStartTimeLine);
+                StartRaceDTO newStartRaceDTO = new StartRaceDTO(UUID.randomUUID(),
+                        startRaceDTO.chesterNumber(),
+                        startRaceDTO.arrivalTime(),
+                        startRaceDTO.monitorName(),
+                        startRaceDTO.athleteName());
+                LIST_START_TIME_LINE.add(newStartRaceDTO);
+                LOGGER.info("Success add new start line: {}", newStartRaceDTO);
+                return ResponseEntity.status(201).body(newStartRaceDTO);
             }
         }catch (Exception e){
             LOGGER.error("Error add new start line", e);
@@ -94,35 +94,35 @@ public class StartTimeMockController {
 
     @PutMapping("/{id_registro}")
     public ResponseEntity<?> updateStartLine(@PathVariable("id_registro") final UUID idStartLine,
-                                             @RequestBody final StartTimeLine startTimeLine){
+                                             @RequestBody final StartRaceDTO startRaceDTO){
         try{
-            Optional<StartTimeLine> startLineFound = LIST_START_TIME_LINE.stream()
+            Optional<StartRaceDTO> startLineFound = LIST_START_TIME_LINE.stream()
                     .filter(s -> s.id().equals(idStartLine)).findFirst();
 
             final boolean hasAthlete = LIST_ATHLETE.stream()
                     .map(AthleteDTO::chesterNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(startTimeLine.chesterNumber()));
+                    .anyMatch(a -> a.equals(startRaceDTO.chesterNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. egistro de largada não atualizado",
-                                startTimeLine.chesterNumber());
+                                startRaceDTO.chesterNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
             if(startLineFound.isPresent()){
-                StartTimeLine newStartTimeLine = new StartTimeLine(idStartLine,
-                        startTimeLine.chesterNumber(),
-                        startTimeLine.arrivalTime(),
-                        startTimeLine.monitorName(),
-                        startTimeLine.athleteName());
+                StartRaceDTO newStartRaceDTO = new StartRaceDTO(idStartLine,
+                        startRaceDTO.chesterNumber(),
+                        startRaceDTO.arrivalTime(),
+                        startRaceDTO.monitorName(),
+                        startRaceDTO.athleteName());
                 if(LIST_START_TIME_LINE.remove(startLineFound.get())){
-                    LIST_START_TIME_LINE.add(newStartTimeLine);
-                    LOGGER.info("Success update start line {}", newStartTimeLine);
-                    return ResponseEntity.ok(newStartTimeLine);
+                    LIST_START_TIME_LINE.add(newStartRaceDTO);
+                    LOGGER.info("Success update start line {}", newStartRaceDTO);
+                    return ResponseEntity.ok(newStartRaceDTO);
                 }else{
-                    LOGGER.warn("Cant update start line {}", newStartTimeLine);
+                    LOGGER.warn("Cant update start line {}", newStartRaceDTO);
                     return ResponseUtils.buildError500();
                 }
             }else{
@@ -138,7 +138,7 @@ public class StartTimeMockController {
     @DeleteMapping("/{id_registro}")
     public ResponseEntity<?> removeStartLine(@PathVariable("id_registro") final UUID idStartLine){
         try{
-            Optional<StartTimeLine> startLineFound = LIST_START_TIME_LINE.stream()
+            Optional<StartRaceDTO> startLineFound = LIST_START_TIME_LINE.stream()
                     .filter(s -> s.id().equals(idStartLine)).findFirst();
 
             if(startLineFound.isPresent()){

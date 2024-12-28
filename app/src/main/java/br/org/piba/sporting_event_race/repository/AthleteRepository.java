@@ -16,4 +16,6 @@ public interface AthleteRepository extends JpaRepository<Athlete, Integer> {
     boolean existsByDocument(String document);
 
     Optional<Athlete> findByIdUuid(UUID idUuid);
+
+    Optional<Athlete> findByBibNumber(Integer bibNumber);
 }

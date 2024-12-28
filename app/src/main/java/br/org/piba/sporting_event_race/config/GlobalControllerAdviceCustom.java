@@ -1,9 +1,6 @@
 package br.org.piba.sporting_event_race.config;
 
-import br.org.piba.sporting_event_race.exception.NoContentException;
-import br.org.piba.sporting_event_race.exception.BusinessException;
-import br.org.piba.sporting_event_race.exception.RecordDuplicateException;
-import br.org.piba.sporting_event_race.exception.RecordNotFoundException;
+import br.org.piba.sporting_event_race.exception.*;
 import br.org.piba.sporting_event_race.model.dto.ResponseErrorDTO;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -55,6 +52,13 @@ public class GlobalControllerAdviceCustom {
         final ResponseErrorDTO error = getResponseErrorDTO(throwable.getMessageClient());
         logger.info(throwable.getMessageClient());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(IncorrectRequestException.class)
+    public ResponseEntity<ResponseErrorDTO> badRequest(IncorrectRequestException throwable){
+        final ResponseErrorDTO error = getResponseErrorDTO(throwable.getMessageClient());
+        logger.info(throwable.getMessageClient());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
     private static ResponseErrorDTO getResponseErrorDTO(final String message) {

@@ -7,17 +7,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record StartTimeLine(@JsonProperty("id_largada") UUID id,
-                            @JsonProperty("numero_peito") Integer chesterNumber,
-                            @JsonProperty("hora") String arrivalTime,
-                            @JsonProperty("monitor") String monitorName,
-                            @JsonProperty("nome_atleta") String athleteName) {
+public record StartRaceDTO(@JsonProperty("id_largada") UUID id,
+                           @JsonProperty("numero_peito") Integer chesterNumber,
+                           @JsonProperty("hora") String arrivalTime,
+                           @JsonProperty("monitor") String monitorName,
+                           @JsonProperty("nome_atleta") String athleteName) {
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StartTimeLine that = (StartTimeLine) o;
+        StartRaceDTO that = (StartRaceDTO) o;
         return Objects.equals(arrivalTime, that.arrivalTime) &&
                 Objects.equals(monitorName, that.monitorName) &&
                 Objects.equals(chesterNumber, that.chesterNumber);
