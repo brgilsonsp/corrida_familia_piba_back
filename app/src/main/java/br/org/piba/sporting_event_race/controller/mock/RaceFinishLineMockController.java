@@ -2,7 +2,7 @@ package br.org.piba.sporting_event_race.controller.mock;
 
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.ErrorResponseDTO;
-import br.org.piba.sporting_event_race.model.dto.RaceFinishLine;
+import br.org.piba.sporting_event_race.model.dto.ArrivalLineDTO;
 import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,34 +19,36 @@ import static br.org.piba.sporting_event_race.controller.mock.AthleteMockControl
 public class RaceFinishLineMockController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RaceFinishLineMockController.class);
-    private static final List<RaceFinishLine> LIST_FINISH_RACE = new ArrayList<>();
+    private static final List<ArrivalLineDTO> LIST_FINISH_RACE = new ArrayList<>();
+    public static final String ATHLETE_NAME = "Nome Atleta";
 
     @PostMapping
-    public ResponseEntity<?> addNewRaceFinish(@RequestBody final RaceFinishLine raceFinishLine){
+    public ResponseEntity<?> addNewRaceFinish(@RequestBody final ArrivalLineDTO arrivalLineDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
                     .map(AthleteDTO::chesterNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(raceFinishLine.chesterNumber()));
+                    .anyMatch(a -> a.equals(arrivalLineDTO.chesterNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de chegada não criado",
-                                raceFinishLine.chesterNumber());
+                                arrivalLineDTO.chesterNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
 
-            final Optional<RaceFinishLine> registered = LIST_FINISH_RACE
-                    .stream().filter(a -> a.equals(raceFinishLine)).findFirst();
+            final Optional<ArrivalLineDTO> registered = LIST_FINISH_RACE
+                    .stream().filter(a -> a.equals(arrivalLineDTO)).findFirst();
             if(registered.isPresent()){
                 LOGGER.info("Race finish registered, not saved: {}", registered.get());
                 return ResponseEntity.ok(registered.get());
             }else {
-                final RaceFinishLine newRaceFinish = new RaceFinishLine(UUID.randomUUID(),
-                        raceFinishLine.chesterNumber(),
-                        raceFinishLine.hour(),
-                        raceFinishLine.monitorName());
+                final ArrivalLineDTO newRaceFinish = new ArrivalLineDTO(UUID.randomUUID(),
+                        arrivalLineDTO.chesterNumber(),
+                        arrivalLineDTO.hour(),
+                        arrivalLineDTO.monitorName(),
+                        ATHLETE_NAME);
                 LIST_FINISH_RACE.add(newRaceFinish);
                 LOGGER.info("Success add new race finish: {}", newRaceFinish);
                 return ResponseEntity.status(201).body(newRaceFinish);
@@ -61,7 +63,7 @@ public class RaceFinishLineMockController {
     public ResponseEntity<?> getRaceFinish(@RequestParam(name = "monitor", required = false) final String monitor,
                                           @RequestParam(name = "numero_peito", required = false) final Integer chesterNumber){
         try{
-            final List<RaceFinishLine> filtered = LIST_FINISH_RACE.stream()
+            final List<ArrivalLineDTO> filtered = LIST_FINISH_RACE.stream()
                     .filter(s -> {
                         if (Objects.nonNull(monitor) && !monitor.isBlank()) {
                             return s.monitorName().equals(monitor);
@@ -92,29 +94,30 @@ public class RaceFinishLineMockController {
 
     @PutMapping("/{id_cronometragem}")
     public ResponseEntity<?> updateRaceFinish(@PathVariable("id_cronometragem") final UUID id,
-                                           @RequestBody final RaceFinishLine raceFinishLine){
+                                           @RequestBody final ArrivalLineDTO arrivalLineDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
                     .map(AthleteDTO::chesterNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(raceFinishLine.chesterNumber()));
+                    .anyMatch(a -> a.equals(arrivalLineDTO.chesterNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de chegada não atualizado",
-                                raceFinishLine.chesterNumber());
+                                arrivalLineDTO.chesterNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
 
-            Optional<RaceFinishLine> optional = LIST_FINISH_RACE.stream()
+            Optional<ArrivalLineDTO> optional = LIST_FINISH_RACE.stream()
                     .filter(s -> s.id().equals(id)).findFirst();
 
             if(optional.isPresent()){
-                RaceFinishLine newRegister = new RaceFinishLine(id,
-                        raceFinishLine.chesterNumber(),
-                        raceFinishLine.hour(),
-                        raceFinishLine.monitorName());
+                ArrivalLineDTO newRegister = new ArrivalLineDTO(id,
+                        arrivalLineDTO.chesterNumber(),
+                        arrivalLineDTO.hour(),
+                        arrivalLineDTO.monitorName(),
+                        ATHLETE_NAME);
                 if(LIST_FINISH_RACE.remove(optional.get())){
                     LOGGER.info("Success update race finish {}", newRegister);
                     return ResponseEntity.ok(newRegister);
@@ -136,7 +139,7 @@ public class RaceFinishLineMockController {
     @DeleteMapping("/{id_cronometragem}")
     public ResponseEntity<?> deleteRaceFinish(@PathVariable("id_cronometragem") final UUID id){
         try{
-            Optional<RaceFinishLine> optional = LIST_FINISH_RACE.stream()
+            Optional<ArrivalLineDTO> optional = LIST_FINISH_RACE.stream()
                     .filter(s -> s.id().equals(id)).findFirst();
 
             if(optional.isPresent()){
