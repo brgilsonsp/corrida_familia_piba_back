@@ -19,7 +19,7 @@ public class StartRaceDtoToEntityConverter implements Converter<StartRaceDTO, St
                 source.id() : RandomUUID.newUUID();
         return StartRace.builder()
                 .idUuid(id)
-                .bibNumber(source.chesterNumber())
+                .bibNumber(source.bibNumber())
                 .timeStart(LocalTime.parse(source.arrivalTime(), DataTimeFormatterUtils.FORMATTER_HOUR))
                 .monitor(source.monitorName())
                 .build();

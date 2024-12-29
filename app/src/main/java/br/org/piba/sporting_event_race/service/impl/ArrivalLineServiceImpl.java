@@ -86,7 +86,7 @@ public class ArrivalLineServiceImpl implements ArrivalLineService {
     }
 
     private void updateEntity(ArrivalLine entityManaged, ArrivalLineDTO startRaceDTO) {
-        entityManaged.setBibNumber(startRaceDTO.chesterNumber());
+        entityManaged.setBibNumber(startRaceDTO.bibNumber());
         entityManaged.setTimeFinish(LocalTime.parse(startRaceDTO.hour(), DataTimeFormatterUtils.FORMATTER_HOUR));
         entityManaged.setMonitor(startRaceDTO.monitorName());
     }

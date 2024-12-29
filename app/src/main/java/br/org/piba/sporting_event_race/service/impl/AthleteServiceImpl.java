@@ -96,7 +96,7 @@ public class AthleteServiceImpl implements AthleteService {
         athleteSaved.setDateOfBirth(LocalDate.parse(athleteDTO.birthDate(), DataTimeFormatterUtils.FORMATTER_DATE));
         athleteSaved.setModality(athleteDTO.modality());
         athleteSaved.setMonitor(athleteDTO.monitorName());
-        athleteSaved.setBibNumber(athleteDTO.chesterNumber());
+        athleteSaved.setBibNumber(athleteDTO.bibNumber());
         athleteSaved.setDocument(athleteDTO.document());
     }
 

@@ -8,7 +8,7 @@ public record ClassificationDTO(@JsonProperty("posicao") int position,
                                 @JsonProperty("tempo_corrida") String totalRaceTime,
                                 @JsonProperty("idade") int age,
                                 @JsonProperty("sexo") String gender,
-                                @JsonProperty("numero_peito") int chesterNumber,
-                                @JsonProperty("modalidade") String category,
+                                @JsonProperty("numero_peito") int bibNumber,
+                                @JsonProperty("modalidade") String modality,
                                 @JsonProperty("monitor") String monitor) {
 }

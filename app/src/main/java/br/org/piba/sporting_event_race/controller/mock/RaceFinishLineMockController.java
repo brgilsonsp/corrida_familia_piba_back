@@ -26,14 +26,14 @@ public class RaceFinishLineMockController {
     public ResponseEntity<?> addNewRaceFinish(@RequestBody final ArrivalLineDTO arrivalLineDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
-                    .map(AthleteDTO::chesterNumber)
+                    .map(AthleteDTO::bibNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(arrivalLineDTO.chesterNumber()));
+                    .anyMatch(a -> a.equals(arrivalLineDTO.bibNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de chegada não criado",
-                                arrivalLineDTO.chesterNumber());
+                                arrivalLineDTO.bibNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
@@ -45,7 +45,7 @@ public class RaceFinishLineMockController {
                 return ResponseEntity.ok(registered.get());
             }else {
                 final ArrivalLineDTO newRaceFinish = new ArrivalLineDTO(UUID.randomUUID(),
-                        arrivalLineDTO.chesterNumber(),
+                        arrivalLineDTO.bibNumber(),
                         arrivalLineDTO.hour(),
                         arrivalLineDTO.monitorName(),
                         ATHLETE_NAME);
@@ -72,7 +72,7 @@ public class RaceFinishLineMockController {
                     })
                     .filter(s -> {
                         if (Objects.nonNull(chesterNumber) && chesterNumber > 0) {
-                            return s.chesterNumber().equals(chesterNumber);
+                            return s.bibNumber().equals(chesterNumber);
                         }
                         return true;
                     }).toList();
@@ -97,14 +97,14 @@ public class RaceFinishLineMockController {
                                            @RequestBody final ArrivalLineDTO arrivalLineDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
-                    .map(AthleteDTO::chesterNumber)
+                    .map(AthleteDTO::bibNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(arrivalLineDTO.chesterNumber()));
+                    .anyMatch(a -> a.equals(arrivalLineDTO.bibNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de chegada não atualizado",
-                                arrivalLineDTO.chesterNumber());
+                                arrivalLineDTO.bibNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
@@ -114,7 +114,7 @@ public class RaceFinishLineMockController {
 
             if(optional.isPresent()){
                 ArrivalLineDTO newRegister = new ArrivalLineDTO(id,
-                        arrivalLineDTO.chesterNumber(),
+                        arrivalLineDTO.bibNumber(),
                         arrivalLineDTO.hour(),
                         arrivalLineDTO.monitorName(),
                         ATHLETE_NAME);

@@ -9,7 +9,7 @@ import java.util.UUID;
 public record AthleteDTO(@JsonProperty("id_atleta") UUID id,
                          @JsonProperty("nome") String name,
                          @JsonProperty("documento") String document,
-                         @JsonProperty("numero_peito") Integer chesterNumber,
+                         @JsonProperty("numero_peito") Integer bibNumber,
                          @JsonProperty("sexo") String gender,
                          @JsonProperty("data_nascimento") String birthDate,
                          @JsonProperty("modalidade") String modality,

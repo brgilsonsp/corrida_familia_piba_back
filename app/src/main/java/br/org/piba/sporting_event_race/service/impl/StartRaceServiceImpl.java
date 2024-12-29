@@ -89,7 +89,7 @@ public class StartRaceServiceImpl implements StartRaceService {
     }
 
     private void updateEntity(StartRace entity, StartRaceDTO dto) {
-        entity.setBibNumber(dto.chesterNumber());
+        entity.setBibNumber(dto.bibNumber());
         entity.setTimeStart(LocalTime.parse(dto.arrivalTime(), DataTimeFormatterUtils.FORMATTER_HOUR));
         entity.setMonitor(dto.monitorName());
     }

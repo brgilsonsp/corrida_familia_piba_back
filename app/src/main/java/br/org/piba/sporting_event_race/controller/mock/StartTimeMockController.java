@@ -34,7 +34,7 @@ public class StartTimeMockController {
                     })
                     .filter(s -> {
                         if (Objects.nonNull(chesterNumber) && chesterNumber > 0) {
-                            return s.chesterNumber() == chesterNumber;
+                            return s.bibNumber() == chesterNumber;
                         }
                         return true;
                     }).toList();
@@ -58,14 +58,14 @@ public class StartTimeMockController {
     public ResponseEntity<?> addNewStartLine(@RequestBody final StartRaceDTO startRaceDTO){
         try{
             final boolean hasAthlete = LIST_ATHLETE.stream()
-                    .map(AthleteDTO::chesterNumber)
+                    .map(AthleteDTO::bibNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(startRaceDTO.chesterNumber()));
+                    .anyMatch(a -> a.equals(startRaceDTO.bibNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. Registro de largada não criado",
-                                startRaceDTO.chesterNumber());
+                                startRaceDTO.bibNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
@@ -78,7 +78,7 @@ public class StartTimeMockController {
             }else{
 
                 StartRaceDTO newStartRaceDTO = new StartRaceDTO(UUID.randomUUID(),
-                        startRaceDTO.chesterNumber(),
+                        startRaceDTO.bibNumber(),
                         startRaceDTO.arrivalTime(),
                         startRaceDTO.monitorName(),
                         startRaceDTO.athleteName());
@@ -100,20 +100,20 @@ public class StartTimeMockController {
                     .filter(s -> s.id().equals(idStartLine)).findFirst();
 
             final boolean hasAthlete = LIST_ATHLETE.stream()
-                    .map(AthleteDTO::chesterNumber)
+                    .map(AthleteDTO::bibNumber)
                     .filter(Objects::nonNull)
-                    .anyMatch(a -> a.equals(startRaceDTO.chesterNumber()));
+                    .anyMatch(a -> a.equals(startRaceDTO.bibNumber()));
 
             if(!hasAthlete){
                 final String messageError = MessageFormat
                         .format("Atleta não encontrado com número de peito {0}. egistro de largada não atualizado",
-                                startRaceDTO.chesterNumber());
+                                startRaceDTO.bibNumber());
                 LOGGER.warn(messageError);
                 return buildRegisterInvalid400(messageError);
             }
             if(startLineFound.isPresent()){
                 StartRaceDTO newStartRaceDTO = new StartRaceDTO(idStartLine,
-                        startRaceDTO.chesterNumber(),
+                        startRaceDTO.bibNumber(),
                         startRaceDTO.arrivalTime(),
                         startRaceDTO.monitorName(),
                         startRaceDTO.athleteName());

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ArrivalLineDTO(@JsonProperty("id_cronometragem") UUID id,
-                             @JsonProperty("numero_peito") Integer chesterNumber,
+                             @JsonProperty("numero_peito") Integer bibNumber,
                              @JsonProperty("hora") String hour,
                              @JsonProperty("monitor") String monitorName,
                              @JsonProperty("nome_atleta") String athleteName) {
@@ -19,11 +19,11 @@ public record ArrivalLineDTO(@JsonProperty("id_cronometragem") UUID id,
         ArrivalLineDTO that = (ArrivalLineDTO) o;
         return Objects.equals(hour, that.hour) &&
                 Objects.equals(monitorName, that.monitorName) &&
-                Objects.equals(chesterNumber, that.chesterNumber);
+                Objects.equals(bibNumber, that.bibNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(chesterNumber, hour, monitorName);
+        return Objects.hash(bibNumber, hour, monitorName);
     }
 }

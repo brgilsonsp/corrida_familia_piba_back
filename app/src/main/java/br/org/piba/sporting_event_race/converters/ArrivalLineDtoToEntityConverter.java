@@ -18,7 +18,7 @@ public class ArrivalLineDtoToEntityConverter implements Converter<ArrivalLineDTO
         final UUID id = Objects.nonNull(source.id()) ? source.id() : RandomUUID.newUUID();
         return ArrivalLine.builder()
                 .idUuid(id)
-                .bibNumber(source.chesterNumber())
+                .bibNumber(source.bibNumber())
                 .timeFinish(LocalTime.parse(source.hour(), DataTimeFormatterUtils.FORMATTER_HOUR))
                 .monitor(source.monitorName())
                 .build();

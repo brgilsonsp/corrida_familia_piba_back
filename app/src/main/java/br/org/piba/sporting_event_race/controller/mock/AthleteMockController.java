@@ -97,7 +97,7 @@ public class AthleteMockController {
                 AthleteDTO newAthlete = new AthleteDTO(UUID.randomUUID(),
                         athlete.name(),
                         athlete.document(),
-                        athlete.chesterNumber(),
+                        athlete.bibNumber(),
                         athlete.gender(),
                         athlete.birthDate(),
                         athlete.modality(),
@@ -153,7 +153,7 @@ public class AthleteMockController {
                 AthleteDTO newAthlete = new AthleteDTO(idAthlete,
                         athlete.name(),
                         athlete.document(),
-                        athlete.chesterNumber(),
+                        athlete.bibNumber(),
                         athlete.gender(),
                         athlete.birthDate(),
                         athlete.modality(),
@@ -178,7 +178,7 @@ public class AthleteMockController {
     }
 
     private static boolean invalidByMonitorName(final AthleteDTO athlete){
-        return (Objects.nonNull(athlete.chesterNumber()) && athlete.chesterNumber() > 0) &&
+        return (Objects.nonNull(athlete.bibNumber()) && athlete.bibNumber() > 0) &&
                 (Objects.isNull(athlete.monitorName()) || athlete.monitorName().isBlank());
     }
 
