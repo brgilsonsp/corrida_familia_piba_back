@@ -5,6 +5,7 @@ import br.org.piba.sporting_event_race.exception.IncorrectRequestException;
 import br.org.piba.sporting_event_race.exception.RecordNotFoundException;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.StartRaceDTO;
+import br.org.piba.sporting_event_race.model.entity.Athlete;
 import br.org.piba.sporting_event_race.model.entity.StartRace;
 import br.org.piba.sporting_event_race.repository.StartRaceRepository;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
@@ -55,10 +56,11 @@ public class StartRaceServiceImpl implements StartRaceService {
         }else{
             startRaces = repository.findAll();
         }
+        final List<AthleteDTO> listAthlete = getListAthlete(startRaces);
 
         return startRaces.stream()
                 .filter(Objects::nonNull)
-                .map(this::mapWithAthleteName)
+                .map(s -> mapWithAthleteName(s, listAthlete))
                 .toList();
     }
 
@@ -68,7 +70,8 @@ public class StartRaceServiceImpl implements StartRaceService {
                 .orElseThrow(() -> new RecordNotFoundException(RECORD_NOT_FOUND));
         updateEntity(startRace, startRaceDTO);
         final StartRace updated = repository.saveAndFlush(startRace);
-        return mapWithAthleteName(updated);
+        final List<AthleteDTO> listAthlete = getListAthlete(List.of(updated));
+        return mapWithAthleteName(updated, listAthlete);
     }
 
     @Override
@@ -94,11 +97,27 @@ public class StartRaceServiceImpl implements StartRaceService {
         entity.setMonitor(dto.monitorName());
     }
 
-    private StartRaceDTO mapWithAthleteName(final StartRace entity) {
-        final Optional<AthleteDTO> athlete = consultAthlete.getAthleteByBibNumber(entity.getBibNumber());
-        return athlete
+    private List<AthleteDTO> getListAthlete(final List<StartRace> startRaces) {
+        List<Integer> bibNumbers = startRaces.stream()
+                .map(StartRace::getBibNumber)
+                .toList();
+        return this.consultAthlete.getListAthleteBy(bibNumbers);
+    }
+
+    private StartRaceDTO mapWithAthleteName(final StartRace entity, List<AthleteDTO> listAthlete) {
+        return listAthlete.stream()
+                .filter(this::isValidAthlete)
+                .filter(a -> a.bibNumber().equals(entity.getBibNumber()))
+                .findFirst()
                 .map(athleteDTO -> convertEntityToDto(entity, athleteDTO.name()))
                 .orElseGet(() -> convertEntityToDto(entity, null));
+    }
+
+    private boolean isValidAthlete(final AthleteDTO athleteDTO){
+        return Objects.nonNull(athleteDTO) &&
+                Objects.nonNull(athleteDTO.name()) &&
+                Objects.nonNull(athleteDTO.bibNumber()) &&
+                athleteDTO.bibNumber() > 0;
     }
 
     private StartRaceDTO convertEntityToDto(final StartRace entity, final String athleteName) {

@@ -6,6 +6,7 @@ import br.org.piba.sporting_event_race.exception.RecordNotFoundException;
 import br.org.piba.sporting_event_race.model.dto.ArrivalLineDTO;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.entity.ArrivalLine;
+import br.org.piba.sporting_event_race.model.entity.StartRace;
 import br.org.piba.sporting_event_race.repository.ArrivalLineRepository;
 import br.org.piba.sporting_event_race.service.ArrivalLineService;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
@@ -53,10 +54,11 @@ public class ArrivalLineServiceImpl implements ArrivalLineService {
         }else{
             arrivalLine = repository.findAll();
         }
+        final List<AthleteDTO> listAthlete = getListAthlete(arrivalLine);
 
         return arrivalLine.stream()
                 .filter(Objects::nonNull)
-                .map(this::mapWithAthleteName)
+                .map(a -> mapWithAthleteName(a, listAthlete))
                 .toList();
     }
 
@@ -66,7 +68,8 @@ public class ArrivalLineServiceImpl implements ArrivalLineService {
                 .orElseThrow(() -> new RecordNotFoundException(RECORD_NOT_FOUND));
         updateEntity(entityManaged, startRaceDTO);
         final ArrivalLine updated = repository.saveAndFlush(entityManaged);
-        return mapWithAthleteName(updated);
+        final List<AthleteDTO> listAthlete = getListAthlete(List.of(updated));
+        return mapWithAthleteName(updated, listAthlete);
     }
 
     @Override
@@ -91,11 +94,28 @@ public class ArrivalLineServiceImpl implements ArrivalLineService {
         entityManaged.setMonitor(startRaceDTO.monitorName());
     }
 
-    private ArrivalLineDTO mapWithAthleteName(final ArrivalLine entity) {
-        final Optional<AthleteDTO> athlete = consultAthlete.getAthleteByBibNumber(entity.getBibNumber());
-        return athlete
+    private ArrivalLineDTO mapWithAthleteName(final ArrivalLine entity, final List<AthleteDTO> athleteDTOS) {
+
+        return athleteDTOS.stream()
+                .filter(this::isValidAthlete)
+                .filter(a -> a.bibNumber().equals(entity.getBibNumber()))
+                .findFirst()
                 .map(athleteDTO -> convertEntityToDto(entity, athleteDTO.name()))
                 .orElseGet(() -> convertEntityToDto(entity, null));
+    }
+
+    private List<AthleteDTO> getListAthlete(final List<ArrivalLine> arrivalLines) {
+        List<Integer> bibNumbers = arrivalLines.stream()
+                .map(ArrivalLine::getBibNumber)
+                .toList();
+        return this.consultAthlete.getListAthleteBy(bibNumbers);
+    }
+
+    private boolean isValidAthlete(final AthleteDTO athleteDTO){
+        return Objects.nonNull(athleteDTO) &&
+                Objects.nonNull(athleteDTO.name()) &&
+                Objects.nonNull(athleteDTO.bibNumber()) &&
+                athleteDTO.bibNumber() > 0;
     }
 
     private ArrivalLineDTO convertEntityToDto(final ArrivalLine entity, final String athleteName) {

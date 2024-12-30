@@ -1,16 +1,16 @@
 package br.org.piba.sporting_event_race.service.impl;
 
 import br.org.piba.sporting_event_race.converters.AthleteEntityToDTOConverter;
-import br.org.piba.sporting_event_race.exception.IncorrectRequestException;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.repository.AthleteRepository;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
-public class ConsultAthleteService implements ConsultAthlete {private final AthleteRepository repository;
+public class ConsultAthleteService implements ConsultAthlete {
+    private final AthleteRepository repository;
     private final AthleteEntityToDTOConverter converter;
 
     public ConsultAthleteService(AthleteRepository repository,
@@ -20,8 +20,10 @@ public class ConsultAthleteService implements ConsultAthlete {private final Athl
     }
 
     @Override
-    public Optional<AthleteDTO> getAthleteByBibNumber(Integer bibNumber) {
-        return repository.findByBibNumber(bibNumber)
-                .map(converter::convert);
+    public List<AthleteDTO> getListAthleteBy(List<Integer> bibNumber) {
+        return repository.findByBibNumberIn(bibNumber)
+                .stream()
+                .map(converter::convert)
+                .toList();
     }
 }
