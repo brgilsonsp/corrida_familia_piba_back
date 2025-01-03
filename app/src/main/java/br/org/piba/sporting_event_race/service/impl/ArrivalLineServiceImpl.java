@@ -11,6 +11,7 @@ import br.org.piba.sporting_event_race.repository.ArrivalLineRepository;
 import br.org.piba.sporting_event_race.service.ArrivalLineService;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
 import br.org.piba.sporting_event_race.utils.DataTimeFormatterUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -34,10 +35,12 @@ public class ArrivalLineServiceImpl implements ArrivalLineService {
         this.consultAthlete = consultAthlete;
     }
 
+    @Transactional
     @Override
     public ArrivalLineDTO save(final ArrivalLineDTO startRaceDTO) {
         final ArrivalLine toSave = Optional.ofNullable(converter.convert(startRaceDTO))
                 .orElseThrow(() -> new IncorrectRequestException("Dados incorreto, entidade não criada"));
+        repository.deleteByBibNumber(startRaceDTO.bibNumber());
         final ArrivalLine saved = repository.save(toSave);
         return convertEntityToDto(saved,null);
     }

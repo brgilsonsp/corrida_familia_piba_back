@@ -17,4 +17,8 @@ public interface StartRaceRepository extends JpaRepository<StartRace, Integer> {
 
     Optional<StartRace> findByIdUuid(UUID idUuid);
 
+    void deleteByBibNumberIn(List<Integer> bibNumber);
+
+    void deleteByBibNumber(Integer bibNumber);
+
 }

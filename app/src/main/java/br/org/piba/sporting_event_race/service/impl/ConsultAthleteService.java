@@ -21,9 +21,15 @@ public class ConsultAthleteService implements ConsultAthlete {
 
     @Override
     public List<AthleteDTO> getListAthleteBy(List<Integer> bibNumber) {
+
         return repository.findByBibNumberIn(bibNumber)
                 .stream()
                 .map(converter::convert)
                 .toList();
+    }
+
+    @Override
+    public List<Integer> getAllBibNumber() {
+        return repository.findAllBibNumber();
     }
 }

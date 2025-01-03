@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ConsultAthlete {
 
     List<AthleteDTO> getListAthleteBy(List<Integer> bibNumber);
+
+    List<Integer> getAllBibNumber();
 }

@@ -16,4 +16,6 @@ public interface ArrivalLineRepository extends JpaRepository<ArrivalLine, Intege
     List<ArrivalLine> findByMonitorAndBibNumber(String monitor, Integer bibNumber);
 
     Optional<ArrivalLine> findByIdUuid(UUID idUuid);
+
+    void deleteByBibNumber(Integer bibNumber);
 }

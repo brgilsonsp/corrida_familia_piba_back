@@ -14,4 +14,6 @@ public interface StartRaceService {
     StartRaceDTO update(StartRaceDTO startRaceDTO, UUID idUuid);
 
     void delete(UUID idUuid);
+
+    List<StartRaceDTO> saveAll(List<StartRaceDTO> startRaceDTOS);
 }

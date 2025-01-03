@@ -11,6 +11,7 @@ import br.org.piba.sporting_event_race.repository.StartRaceRepository;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
 import br.org.piba.sporting_event_race.service.StartRaceService;
 import br.org.piba.sporting_event_race.utils.DataTimeFormatterUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -35,10 +36,12 @@ public class StartRaceServiceImpl implements StartRaceService {
         this.consultAthlete = consultAthlete;
     }
 
+    @Transactional
     @Override
     public StartRaceDTO save(final StartRaceDTO startRaceDTO) {
         StartRace entityToSave = Optional.ofNullable(converterDtoToEntity.convert(startRaceDTO))
                 .orElseThrow(() -> new IncorrectRequestException("Dados incorreto, entidade não criada"));
+        repository.deleteByBibNumber(startRaceDTO.bibNumber());
         StartRace startRaceSaved = repository.saveAndFlush(entityToSave);
 
         return convertEntityToDto(startRaceSaved, null);
@@ -81,6 +84,26 @@ public class StartRaceServiceImpl implements StartRaceService {
                 .orElseThrow(() -> new RecordNotFoundException(RECORD_NOT_FOUND));
 
         repository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public List<StartRaceDTO> saveAll(List<StartRaceDTO> startRaceDTOS) {
+        List<Integer> bibNumber = startRaceDTOS.stream()
+                .filter(Objects::nonNull)
+                .map(StartRaceDTO::bibNumber)
+                .toList();
+        repository.deleteByBibNumberIn(bibNumber);
+
+        final List<StartRace> listToSave = startRaceDTOS.stream()
+                .filter(Objects::nonNull)
+                .map(converterDtoToEntity::convert)
+                .toList();
+        final List<AthleteDTO> listAthlete = getListAthlete(listToSave);
+        return repository.saveAllAndFlush(listToSave)
+                .stream()
+                .map(s -> mapWithAthleteName(s, listAthlete))
+                .toList();
     }
 
     private static boolean hasBibNumber(Integer bibNumber) {
