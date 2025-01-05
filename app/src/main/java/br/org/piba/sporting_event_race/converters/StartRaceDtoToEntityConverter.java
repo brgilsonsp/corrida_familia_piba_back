@@ -21,7 +21,7 @@ public class StartRaceDtoToEntityConverter implements Converter<StartRaceDTO, St
                 .idUuid(id)
                 .bibNumber(source.bibNumber())
                 .timeStart(LocalTime.parse(source.arrivalTime(), DataTimeFormatterUtils.FORMATTER_HOUR))
-                .monitor(source.monitorName())
+                .monitorName(source.monitorName())
                 .build();
     }
 }

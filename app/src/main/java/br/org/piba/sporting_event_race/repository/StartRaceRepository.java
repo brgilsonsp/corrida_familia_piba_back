@@ -9,11 +9,11 @@ import java.util.UUID;
 
 public interface StartRaceRepository extends JpaRepository<StartRace, Integer> {
 
-    List<StartRace> findByMonitor(String monitor);
+    List<StartRace> findByMonitorName(String monitor);
 
     List<StartRace> findByBibNumber(Integer bibNumber);
 
-    List<StartRace> findByMonitorAndBibNumber(String monitor, Integer bibNumber);
+    List<StartRace> findByMonitorNameAndBibNumber(String monitor, Integer bibNumber);
 
     Optional<StartRace> findByIdUuid(UUID idUuid);
 

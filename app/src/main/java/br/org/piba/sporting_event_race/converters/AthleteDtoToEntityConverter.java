@@ -21,7 +21,7 @@ public class AthleteDtoToEntityConverter implements Converter<AthleteDTO, Athlet
         return Athlete.builder()
                 .idUuid(id)
                 .document(source.document())
-                .name(source.name())
+                .athleteName(source.name())
                 .gender(source.gender())
                 .dateOfBirth(LocalDate.parse(source.birthDate(), DataTimeFormatterUtils.FORMATTER_DATE))
                 .modality(source.modality())

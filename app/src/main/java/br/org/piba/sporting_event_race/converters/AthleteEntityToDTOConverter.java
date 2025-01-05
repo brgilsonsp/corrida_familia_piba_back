@@ -6,17 +6,15 @@ import br.org.piba.sporting_event_race.utils.DataTimeFormatterUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeFormatter;
-
 @Component
 public class AthleteEntityToDTOConverter implements Converter<Athlete, AthleteDTO> {
 
 
     @Override
     public AthleteDTO convert(Athlete source) {
-        return new AthleteDTO(source.getIdUuid(), source.getName(),
+        return new AthleteDTO(source.getIdUuid(), source.getAthleteName(),
                 source.getDocument(), source.getBibNumber(), source.getGender(),
                 source.getDateOfBirth().format(DataTimeFormatterUtils.FORMATTER_DATE),
-                source.getModality(), source.getMonitor());
+                source.getModality(), source.getMonitorName());
     }
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"bibNumber", "timeStart", "monitor"})
+@EqualsAndHashCode(of = {"bibNumber", "timeStart", "monitorName"})
 @Entity
 @Table(name = "start_race")
 public class StartRace {
@@ -30,6 +30,6 @@ public class StartRace {
     @Column(name = "time_start", nullable = false)
     private LocalTime timeStart;
 
-    @Column(name = "monitor", nullable = false)
-    private String monitor;
+    @Column(name = "monitor_name", nullable = false)
+    private String monitorName;
 }

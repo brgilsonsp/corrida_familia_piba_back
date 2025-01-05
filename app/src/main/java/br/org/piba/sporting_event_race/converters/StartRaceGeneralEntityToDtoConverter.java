@@ -13,6 +13,6 @@ public class StartRaceGeneralEntityToDtoConverter implements Converter<StartRace
     public StartRaceGeneralDTO convert(StartRaceGeneral source) {
         return new StartRaceGeneralDTO(source.getIdUuid(),
                 source.getTimeStart().format(DataTimeFormatterUtils.FORMATTER_HOUR),
-                source.getMonitor());
+                source.getMonitorName());
     }
 }

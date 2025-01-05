@@ -10,6 +10,7 @@ import br.org.piba.sporting_event_race.repository.StartRaceGeneralRepository;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
 import br.org.piba.sporting_event_race.service.StartRaceGeneralService;
 import br.org.piba.sporting_event_race.service.StartRaceService;
+import br.org.piba.sporting_event_race.service.StatusFinishGeneralRaceService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,9 @@ public class StartRaceGeneralServiceImpl implements StartRaceGeneralService {
 
     public StartRaceGeneralServiceImpl(StartRaceGeneralRepository repository,
                                        StartRaceGeneralDtoToEntityConverter converterDtoToEntity,
-                                       StartRaceGeneralEntityToDtoConverter converterEntityToDto, ConsultAthlete consultAthlete, StartRaceService startRaceService) {
+                                       StartRaceGeneralEntityToDtoConverter converterEntityToDto,
+                                       ConsultAthlete consultAthlete,
+                                       StartRaceService startRaceService) {
         this.repository = repository;
         this.converterDtoToEntity = converterDtoToEntity;
         this.converterEntityToDto = converterEntityToDto;

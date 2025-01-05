@@ -27,8 +27,8 @@ public class Athlete {
     @Column(name = "document", unique = true, nullable = false)
     private String document;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "athlete_name", nullable = false)
+    private String athleteName;
 
     @Column(name = "gender", nullable = false)
     private String gender;
@@ -42,6 +42,6 @@ public class Athlete {
     @Column(name = "bib_number")
     private Integer bibNumber;
 
-    @Column(name = "monitor")
-    private String monitor;
+    @Column(name = "monitor_name")
+    private String monitorName;
 }

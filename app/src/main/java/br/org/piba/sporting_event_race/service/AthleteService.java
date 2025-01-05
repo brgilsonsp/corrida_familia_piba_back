@@ -1,6 +1,7 @@
 package br.org.piba.sporting_event_race.service;
 
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
+import br.org.piba.sporting_event_race.model.dto.AthleteTimerDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,4 +15,6 @@ public interface AthleteService {
     void deleteAthlete(UUID uuid);
 
     AthleteDTO updateAthlete(AthleteDTO athleteDTO, UUID idUuid);
+
+    List<AthleteTimerDTO> getAthleteTimer();
 }

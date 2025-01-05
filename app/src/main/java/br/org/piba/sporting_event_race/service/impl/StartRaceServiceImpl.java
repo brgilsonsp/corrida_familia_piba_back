@@ -5,7 +5,6 @@ import br.org.piba.sporting_event_race.exception.IncorrectRequestException;
 import br.org.piba.sporting_event_race.exception.RecordNotFoundException;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
 import br.org.piba.sporting_event_race.model.dto.StartRaceDTO;
-import br.org.piba.sporting_event_race.model.entity.Athlete;
 import br.org.piba.sporting_event_race.model.entity.StartRace;
 import br.org.piba.sporting_event_race.repository.StartRaceRepository;
 import br.org.piba.sporting_event_race.service.ConsultAthlete;
@@ -43,7 +42,6 @@ public class StartRaceServiceImpl implements StartRaceService {
                 .orElseThrow(() -> new IncorrectRequestException("Dados incorreto, entidade não criada"));
         repository.deleteByBibNumber(startRaceDTO.bibNumber());
         StartRace startRaceSaved = repository.saveAndFlush(entityToSave);
-
         return convertEntityToDto(startRaceSaved, null);
     }
 
@@ -51,9 +49,9 @@ public class StartRaceServiceImpl implements StartRaceService {
     public List<StartRaceDTO> getBy(final String monitor, final Integer bibNumber) {
         final List<StartRace> startRaces;
         if(hasMonitor(monitor) && hasBibNumber(bibNumber)){
-            startRaces = repository.findByMonitorAndBibNumber(monitor, bibNumber);
+            startRaces = repository.findByMonitorNameAndBibNumber(monitor, bibNumber);
         }else if(hasMonitor(monitor)){
-            startRaces = repository.findByMonitor(monitor);
+            startRaces = repository.findByMonitorName(monitor);
         }else if(hasBibNumber(bibNumber)){
             startRaces = repository.findByBibNumber(bibNumber);
         }else{
@@ -82,7 +80,6 @@ public class StartRaceServiceImpl implements StartRaceService {
         final Integer id = repository.findByIdUuid(idUuid)
                 .map(StartRace::getId)
                 .orElseThrow(() -> new RecordNotFoundException(RECORD_NOT_FOUND));
-
         repository.deleteById(id);
     }
 
@@ -117,7 +114,7 @@ public class StartRaceServiceImpl implements StartRaceService {
     private void updateEntity(StartRace entity, StartRaceDTO dto) {
         entity.setBibNumber(dto.bibNumber());
         entity.setTimeStart(LocalTime.parse(dto.arrivalTime(), DataTimeFormatterUtils.FORMATTER_HOUR));
-        entity.setMonitor(dto.monitorName());
+        entity.setMonitorName(dto.monitorName());
     }
 
     private List<AthleteDTO> getListAthlete(final List<StartRace> startRaces) {
@@ -147,7 +144,7 @@ public class StartRaceServiceImpl implements StartRaceService {
         return new StartRaceDTO(entity.getIdUuid(),
                 entity.getBibNumber(),
                 entity.getTimeStart().format(DataTimeFormatterUtils.FORMATTER_HOUR),
-                entity.getMonitor(),
+                entity.getMonitorName(),
                 athleteName);
     }
 }

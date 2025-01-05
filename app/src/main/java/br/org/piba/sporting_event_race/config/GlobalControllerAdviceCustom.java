@@ -23,6 +23,7 @@ public class GlobalControllerAdviceCustom {
     public ResponseEntity<ResponseErrorDTO> fatalError(Throwable throwable){
         final HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         final ResponseErrorDTO error = getResponseErrorDTO(throwable.getMessage());
+        logger.error(throwable.getMessage(), throwable);
         return ResponseEntity.status(status).body(error);
     }
 

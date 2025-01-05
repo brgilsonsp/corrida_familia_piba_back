@@ -1,19 +1,21 @@
 package br.org.piba.sporting_event_race.controller.mock;
 
 import br.org.piba.sporting_event_race.model.dto.ClassificationDTO;
+import br.org.piba.sporting_event_race.repository.AthleteRepository;
 import br.org.piba.sporting_event_race.utils.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 @RestController
 @RequestMapping("/mock/classificacao")
@@ -21,18 +23,20 @@ public class ClassificationAthletesMockController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassificationAthletesMockController.class);
     private static final List<ClassificationDTO> listClassification;
+    @Autowired
+    private AthleteRepository repository;
 
     static{
         ClassificationDTO ana = new ClassificationDTO(1, "Ana Cristina",
-                "00:32:34.234", 25, "Feminino", 12345,
+                LocalTime.of(0, 32, 34, 234), 25, "Feminino", 12345,
                 "Corrida", "Andre");
 
         ClassificationDTO pedro = new ClassificationDTO(2, "Pedro",
-                "00:32:54.768", 28, "Masculino", 4321,
+                LocalTime.of(0, 32, 54, 768), 28, "Masculino", 4321,
                 "Corrida", "Flavia");
 
         ClassificationDTO felipe = new ClassificationDTO(1, "Felipe",
-                "00:52:34.234", 45, "Masculino", 9876,
+                LocalTime.of(0, 52, 34, 237), 45, "Masculino", 9876,
                 "Caminhada", "Paula");
 
         listClassification = new ArrayList<>();
@@ -44,6 +48,7 @@ public class ClassificationAthletesMockController {
     @GetMapping
     public ResponseEntity<?> getClassificationsByGender(@RequestParam(name="sexo", required = false) final String gender,
                                                          @RequestParam(name="faixa_etaria", required = false) final String ageRange){
+
         try{
             List<ClassificationDTO> filtered = listClassification.stream()
                     .filter(s -> {
@@ -77,6 +82,5 @@ public class ClassificationAthletesMockController {
             LOGGER.error("Error get classification", e);
             throw e;
         }
-
     }
 }

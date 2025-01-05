@@ -6,6 +6,7 @@ import br.org.piba.sporting_event_race.exception.BusinessException;
 import br.org.piba.sporting_event_race.exception.RecordNotFoundException;
 import br.org.piba.sporting_event_race.exception.RecordDuplicateException;
 import br.org.piba.sporting_event_race.model.dto.AthleteDTO;
+import br.org.piba.sporting_event_race.model.dto.AthleteTimerDTO;
 import br.org.piba.sporting_event_race.model.entity.Athlete;
 import br.org.piba.sporting_event_race.repository.AthleteRepository;
 import br.org.piba.sporting_event_race.service.AthleteService;
@@ -42,7 +43,7 @@ public class AthleteServiceImpl implements AthleteService {
         if(StringUtil.notNullNorEmpty(document)){
             athletes = Collections.singletonList(repository.findFirstByDocument(document));
         }else if(StringUtil.notNullNorEmpty(partialName)){
-            athletes = repository.findByNameStartingWith(partialName);
+            athletes = repository.findByAthleteNameStartingWith(partialName);
         }else{
             athletes = repository.findAll();
         }
@@ -84,6 +85,11 @@ public class AthleteServiceImpl implements AthleteService {
         return converterEntityToDto(athleteUpdated);
     }
 
+    @Override
+    public List<AthleteTimerDTO> getAthleteTimer() {
+        return repository.findAllAthleteTimer();
+    }
+
     private void validaIfRecordExist(AthleteDTO athleteDTO) {
         if(repository.existsByDocument(athleteDTO.document())){
             throw new RecordDuplicateException(RECORD_DUPLICATE);
@@ -91,11 +97,11 @@ public class AthleteServiceImpl implements AthleteService {
     }
 
     private void updateEntity(AthleteDTO athleteDTO, Athlete athleteSaved) {
-        athleteSaved.setName(athleteDTO.name());
+        athleteSaved.setAthleteName(athleteDTO.name());
         athleteSaved.setGender(athleteDTO.gender());
         athleteSaved.setDateOfBirth(LocalDate.parse(athleteDTO.birthDate(), DataTimeFormatterUtils.FORMATTER_DATE));
         athleteSaved.setModality(athleteDTO.modality());
-        athleteSaved.setMonitor(athleteDTO.monitorName());
+        athleteSaved.setMonitorName(athleteDTO.monitorName());
         athleteSaved.setBibNumber(athleteDTO.bibNumber());
         athleteSaved.setDocument(athleteDTO.document());
     }

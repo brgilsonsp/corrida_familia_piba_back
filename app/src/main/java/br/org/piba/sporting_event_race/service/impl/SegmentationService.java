@@ -18,7 +18,7 @@ public class SegmentationService implements Segmentation {
                 "13-15",
                 "16-20",
                 "21-30",
-                "21-40",
+                "31-40",
                 "41-50",
                 "61+");
         final List<String> category = List.of("Corrida", "Caminhada");

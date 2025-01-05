@@ -12,10 +12,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"bibNumber", "timeFinish", "monitor"})
+@EqualsAndHashCode(of = {"bibNumber", "timeFinish", "monitorName"})
 @Entity
 @Table(name = "finish_race")
-public class ArrivalLine {
+public class FinishRace {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,6 @@ public class ArrivalLine {
     @Column(name = "time_finish", nullable = false)
     private LocalTime timeFinish;
 
-    @Column(name = "monitor", nullable = false)
-    private String monitor;
+    @Column(name = "monitor_name", nullable = false)
+    private String monitorName;
 }

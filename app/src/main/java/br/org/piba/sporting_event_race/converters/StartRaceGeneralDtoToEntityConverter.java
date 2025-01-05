@@ -20,7 +20,7 @@ public class StartRaceGeneralDtoToEntityConverter implements Converter<StartRace
         return StartRaceGeneral.builder()
                 .idUuid(id)
                 .timeStart(LocalTime.parse(source.arrivalTime(), DataTimeFormatterUtils.FORMATTER_HOUR))
-                .monitor(source.monitorName())
+                .monitorName(source.monitorName())
                 .build();
     }
 }
