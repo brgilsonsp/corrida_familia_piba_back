@@ -13,8 +13,8 @@ import br.org.piba.sporting_event_race.service.StatusFinishGeneralRaceService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ClassificationServiceImpl implements ClassificationService {
@@ -48,25 +48,32 @@ public class ClassificationServiceImpl implements ClassificationService {
     @Override
     public void closeRace(StatusFinishGeneralRaceDTO statusFinishGeneralRaceDTO) {
         repository.deleteAll();
+        statusRaceService.closeRace(statusFinishGeneralRaceDTO);
         final List<Classification> classifications = athleteService.getAthleteTimer().stream()
                 .filter(Objects::nonNull)
                 .map(athleteTimerToClassificationDto::convert)
                 .toList();
         repository.saveAllAndFlush(classifications);
-        statusRaceService.closeRace(statusFinishGeneralRaceDTO);
     }
 
     private static List<ClassificationDTO> getClassificationDTOS(List<Classification> classificationsSaved) {
-        classificationsSaved.sort(Comparator.comparing(Classification::getTotalTime));
+        final List<Classification> collect = extractPositiveAndSortedClassification(classificationsSaved);
         final List<ClassificationDTO> classificationDTOS = new ArrayList<>();
-        for(int i = 0; i<= classificationsSaved.size()-1; i++){
-            Classification classification = classificationsSaved.get(i);
+        for(int i = 0; i<= collect.size()-1; i++){
+            Classification classification = collect.get(i);
             final ClassificationDTO classificationDTO = new ClassificationDTO(i + 1, classification.getAthleteName(), classification.getTotalTime(),
                     classification.getAge(), classification.getGender(), classification.getBibNumber(),
                     classification.getModality(), classification.getMonitorNameFinishRace());
             classificationDTOS.add(classificationDTO);
         }
         return classificationDTOS;
+    }
+
+    private static List<Classification> extractPositiveAndSortedClassification(List<Classification> classificationsSaved) {
+        return classificationsSaved.stream()
+                .filter(a -> a.getTotalTime().isAfter(LocalTime.MIN))
+                .sorted(Comparator.comparing(Classification::getTotalTime))
+                .toList();
     }
 
     private boolean raceNotClosed() {

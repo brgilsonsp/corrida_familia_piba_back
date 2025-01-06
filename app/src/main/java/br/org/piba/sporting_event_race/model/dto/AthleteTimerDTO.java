@@ -19,7 +19,9 @@ public record AthleteTimerDTO(Integer bibNumber,
 
     public LocalTime getTotalRace(){
         Duration between = Duration.between(timeStart, timeFinish);
-        return LocalTime.of(between.toHoursPart(), between.toMinutesPart(), between.toSecondsPart(), between.toNanosPart());
+        return between.isNegative() ?
+                LocalTime.MIN :
+                LocalTime.of(between.toHoursPart(), between.toMinutesPart(), between.toSecondsPart(), between.toNanosPart());
     }
 
 }

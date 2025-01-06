@@ -40,8 +40,8 @@ public class ClassificationController {
     }
 
     @PostMapping(value = "/encerrar_corrida", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> closeRace(@RequestBody final StatusFinishGeneralRaceDTO statusFinishGeneralRaceDTO){
+    public ResponseEntity<StatusFinishGeneralRaceDTO> closeRace(@RequestBody final StatusFinishGeneralRaceDTO statusFinishGeneralRaceDTO){
         classificationService.closeRace(statusFinishGeneralRaceDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(statusFinishGeneralRaceDTO);
     }
 }
