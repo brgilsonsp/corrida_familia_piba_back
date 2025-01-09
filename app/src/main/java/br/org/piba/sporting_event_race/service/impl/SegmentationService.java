@@ -16,10 +16,10 @@ public class SegmentationService implements Segmentation {
         final List<String> rangeAge = List.of("6-7",
                 "8-12",
                 "13-15",
-                "16-20",
-                "21-30",
-                "31-40",
-                "41-50",
+                "16-29",
+                "30-39",
+                "40-49",
+                "50-59",
                 "61+");
         final List<String> category = List.of("Corrida", "Caminhada");
         SEGMENT = new SegmentDTO(gender, rangeAge, category);
