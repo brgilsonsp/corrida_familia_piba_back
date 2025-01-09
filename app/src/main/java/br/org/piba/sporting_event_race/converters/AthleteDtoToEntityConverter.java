@@ -26,6 +26,7 @@ public class AthleteDtoToEntityConverter implements Converter<AthleteDTO, Athlet
                 .dateOfBirth(LocalDate.parse(source.birthDate(), DataTimeFormatterUtils.FORMATTER_DATE))
                 .modality(source.modality())
                 .bibNumber(source.bibNumber())
+                .monitorName(source.monitorName())
                 .build();
     }
 }
