@@ -37,11 +37,26 @@ public class FinishRaceServiceImpl implements FinishRaceService {
     @Transactional
     @Override
     public FinishRaceDTO save(final FinishRaceDTO startRaceDTO) {
-        final FinishRace toSave = Optional.ofNullable(converter.convert(startRaceDTO))
+        final FinishRace entity = convertToEntity(startRaceDTO);
+        Optional<FinishRace> entityBeforeSaved = findTImeFinishBefore(entity.getBibNumber(), entity.getTimeFinish());
+        if(entityBeforeSaved.isPresent()){
+            return convertEntityToDto(entityBeforeSaved.get(),null);
+        }else{
+            repository.deleteByBibNumber(entity.getBibNumber());
+            final FinishRace saved = repository.save(entity);
+            return convertEntityToDto(saved,null);
+        }
+    }
+
+    private FinishRace convertToEntity(final FinishRaceDTO startRaceDTO){
+        return  Optional.ofNullable(converter.convert(startRaceDTO))
                 .orElseThrow(() -> new IncorrectRequestException("Dados incorreto, entidade não criada"));
-        repository.deleteByBibNumber(startRaceDTO.bibNumber());
-        final FinishRace saved = repository.save(toSave);
-        return convertEntityToDto(saved,null);
+    }
+
+    private Optional<FinishRace> findTImeFinishBefore(final int bibNumber, final LocalTime timeFinishActual){
+        return repository.findByBibNumber(bibNumber).stream()
+                .filter(r -> r.getTimeFinish().isBefore(timeFinishActual))
+                .findFirst();
     }
 
     @Override
