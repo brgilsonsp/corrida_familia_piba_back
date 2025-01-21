@@ -14,4 +14,6 @@ public interface FinishRaceService {
     FinishRaceDTO update(FinishRaceDTO startRaceDTO, UUID idUuid);
 
     void delete(UUID idUuid);
+
+    void deleteAll();
 }

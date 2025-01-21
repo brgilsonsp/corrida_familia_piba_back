@@ -97,6 +97,11 @@ public class FinishRaceServiceImpl implements FinishRaceService {
         repository.deleteById(id);
     }
 
+    @Override
+    public void deleteAll() {
+        this.repository.deleteAll();
+    }
+
     private static boolean hasBibNumber(Integer bibNumber) {
         return Objects.nonNull(bibNumber) && bibNumber > 0;
     }

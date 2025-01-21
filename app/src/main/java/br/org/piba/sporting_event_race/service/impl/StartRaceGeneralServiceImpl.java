@@ -7,10 +7,7 @@ import br.org.piba.sporting_event_race.model.dto.StartRaceDTO;
 import br.org.piba.sporting_event_race.model.dto.StartRaceGeneralDTO;
 import br.org.piba.sporting_event_race.model.entity.StartRaceGeneral;
 import br.org.piba.sporting_event_race.repository.StartRaceGeneralRepository;
-import br.org.piba.sporting_event_race.service.ConsultAthlete;
-import br.org.piba.sporting_event_race.service.StartRaceGeneralService;
-import br.org.piba.sporting_event_race.service.StartRaceService;
-import br.org.piba.sporting_event_race.service.StatusFinishGeneralRaceService;
+import br.org.piba.sporting_event_race.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -26,17 +23,20 @@ public class StartRaceGeneralServiceImpl implements StartRaceGeneralService {
     private final StartRaceGeneralEntityToDtoConverter converterEntityToDto;
     private final ConsultAthlete consultAthlete;
     private final StartRaceService startRaceService;
+    private final FinishRaceService finishRaceService;
 
     public StartRaceGeneralServiceImpl(StartRaceGeneralRepository repository,
                                        StartRaceGeneralDtoToEntityConverter converterDtoToEntity,
                                        StartRaceGeneralEntityToDtoConverter converterEntityToDto,
                                        ConsultAthlete consultAthlete,
-                                       StartRaceService startRaceService) {
+                                       StartRaceService startRaceService,
+                                       FinishRaceService finishRaceService) {
         this.repository = repository;
         this.converterDtoToEntity = converterDtoToEntity;
         this.converterEntityToDto = converterEntityToDto;
         this.consultAthlete = consultAthlete;
         this.startRaceService = startRaceService;
+        this.finishRaceService = finishRaceService;
     }
 
     @Transactional
@@ -51,6 +51,7 @@ public class StartRaceGeneralServiceImpl implements StartRaceGeneralService {
                 .map(b -> buildStartRaceDto(b, dto))
                 .toList();
         startRaceService.saveAll(listStartRaceDto);
+        finishRaceService.deleteAll();
         return converterEntityToDto.convert(startRaceGeneralSaved);
     }
 
